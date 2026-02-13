@@ -385,6 +385,14 @@ include_industry_benchmark: true
 
     ## What Members are saying about our services
 
+    find out what youre members are thinking, in their own words
+
+    {% line_break lines=1 /%}
+
+    {% partial file="satisfaction/aiexecsummary" /%}
+
+    {% line_break lines=1 /%}
+
     {% partial file="satisfaction/aimetricbucketspositive"/%}
 
     {% line_break lines=1 /%}

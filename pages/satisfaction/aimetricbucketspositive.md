@@ -13,13 +13,20 @@ from {{filtered_table}}
 
 
 ```sql metric_calc_ai_feature_positive
-with cte as (
+with filt_respsonses as (
 select
-  hackathon_buckets.*
-  , filt_joins.organization_name
+*
 from hackathon_buckets
+where created_at >= '2026-02-13 15:50:38.345'
+)
+
+,cte as (
+select
+  filt_respsonses.*
+  , filt_joins.organization_name
+from filt_respsonses
 inner join (select distinct organization_id, organization_name from {{table_inner_join}}) as filt_joins
-  on toString(filt_joins.organization_id) = hackathon_buckets.org_id
+  on toString(filt_joins.organization_id) = filt_respsonses.org_id
 where sentiment = 'positive'
 )
 
@@ -37,18 +44,9 @@ limit 3
 {% table
   data="metric_calc_ai_feature_positive"
   title="positive feedback"
+  info="AI bucketed summary of positive feedback from PJS surveys when asked If you had a magic wand, what is one thing would you wish we could help you with and how?"
 %}
     {% dimension value="bucket" title="Bucket" /%}
-    {% measure value="response_count as Responses" title="Response Count" fmt="#,##0" /%}
-    {% measure value="response_pct" title="Response %" fmt="pct1" /%}
+    {% measure value="response_pct as percentage_of_respsonses" fmt="pct1" /%}
 {% /table %}
 
-{% horizontal_bar_chart
-  data="metric_calc_ai_feature_positive"
-  x="response_pct"
-  y="bucket"
-  data_labels={
-    position="right"
-    fmt="pct1"
-  }
-/%}
