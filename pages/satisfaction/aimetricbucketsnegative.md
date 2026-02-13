@@ -37,7 +37,7 @@ bucket
 , toFloat64(response_count) / sum(response_count) over () as response_count_pct
 from cte
 order by response_count desc
-limit 3
+limit 2
 ```
 
 ```sql multi_org_select_ai
